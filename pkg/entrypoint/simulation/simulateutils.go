@@ -46,7 +46,7 @@ var (
 		"GASLIMIT",
 		"DIFFICULTY",
 		"TIMESTAMP",
-		"BASEFEE",
+		// "BASEFEE",
 		"BLOCKHASH",
 		"NUMBER",
 		"SELFBALANCE",

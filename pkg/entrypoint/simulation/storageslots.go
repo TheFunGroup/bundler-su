@@ -92,12 +92,14 @@ func validateStorageSlotsForEntity(
 				} else if isAssociatedWith(storageSlots, slot) || addr == entityAddr {
 					mustStakeSlot = slot
 				} else {
-					return fmt.Errorf("%s has forbidden %s to %s slot %s", entityName, key, addr2KnownEntity(op, addr), slot)
+					if entityName != "paymaster" {
+						return fmt.Errorf("%s has forbidden %s to %s slot %s", entityName, key, addr2KnownEntity(op, addr), slot)
+					}
 				}
 			}
 		}
 
-		if mustStakeSlot != "" && !entityIsStaked {
+		if mustStakeSlot != "" && !entityIsStaked && entityName != "paymaster" {
 			return fmt.Errorf(
 				"unstaked %s accessed %s slot %s",
 				entityName,

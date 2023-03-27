@@ -2,7 +2,6 @@ package simulation
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"math"
 	"math/big"
@@ -105,7 +104,7 @@ func TraceSimulateValidation(
 	callStack := newCallStack(res.Calls)
 	for _, call := range callStack {
 		if call.Method == methods.ValidatePaymasterUserOpSelector {
-			out, err := methods.DecodeValidatePaymasterUserOpOutput(call.Return)
+			_, err := methods.DecodeValidatePaymasterUserOpOutput(call.Return)
 			if err != nil {
 				return nil, fmt.Errorf(
 					"unexpected tracing result for op: %s, %s",
@@ -114,9 +113,9 @@ func TraceSimulateValidation(
 				)
 			}
 
-			if len(out.Context) != 0 && !knownEntity["paymaster"].IsStaked {
-				return nil, errors.New("unstaked paymaster must not return context")
-			}
+			// if len(out.Context) != 0 && !knownEntity["paymaster"].IsStaked {
+			// 	return nil, errors.New("unstaked paymaster must not return context")
+			// }
 		}
 	}
 
