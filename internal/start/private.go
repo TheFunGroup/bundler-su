@@ -106,7 +106,7 @@ func PrivateMode() {
 	if err := b.Run(); err != nil {
 		log.Fatal(err)
 	}
-
+	
 	// init Debug
 	var d *client.Debug
 	if conf.DebugMode {
@@ -128,7 +128,6 @@ func PrivateMode() {
 	)
 
 	r.RunTLS(":3000", "./internal/https/host.cert", "./internal/https/host.key")
-	// http.ListenAndServeTLS(":3001", "./host.cert", "./host.key", r)
 
 	r.GET("/ping", func(g *gin.Context) {
 		g.Status(http.StatusOK)
