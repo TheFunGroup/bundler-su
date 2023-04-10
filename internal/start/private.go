@@ -116,7 +116,7 @@ func PrivateMode() {
 	}
 
 	// Init HTTP server
-	gin.SetMode(conf.GinModes)
+	gin.SetMode(conf.GinMode)
 	r := gin.New()
 	if err := r.SetTrustedProxies(nil); err != nil {
 		log.Fatal(err)
@@ -127,7 +127,7 @@ func PrivateMode() {
 		gin.Recovery(),
 	)
 
-	r.RunTLS(":3000", "./internal/testutils/host.cert", "./internal/testutils/host.key")
+	r.RunTLS(":3000", "./internal/https/host.cert", "./internal/https/host.key")
 	// http.ListenAndServeTLS(":3001", "./host.cert", "./host.key", r)
 
 	r.GET("/ping", func(g *gin.Context) {
