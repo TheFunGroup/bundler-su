@@ -116,7 +116,7 @@ func PrivateMode() {
 	}
 
 	// Init HTTP server
-	gin.SetMode(conf.GinModes)
+	gin.SetMode(conf.GinMode)
 	r := gin.New()
 	if err := r.SetTrustedProxies(nil); err != nil {
 		log.Fatal(err)
