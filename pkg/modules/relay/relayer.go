@@ -3,7 +3,6 @@
 package relay
 
 import (
-	"fmt"
 	"math/big"
 	"net/http"
 	"time"
@@ -89,56 +88,9 @@ func (r *Relayer) SetBannedTimeWindow(limit time.Duration) {
 func (r *Relayer) FilterByClientID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		l := r.logger.WithName("filter_by_client")
-
-		isBanned := false
-		var os, oi int
-		cid := ginutils.GetClientIPFromXFF(c)
-		err := r.db.View(func(txn *badger.Txn) error {
-			opsSeen, opsIncluded, err := getOpsCountByClientID(txn, cid)
-			if err != nil {
-				return err
-			}
-			l = l.
-				WithValues("client_id", cid).
-				WithValues("opsSeen", opsSeen).
-				WithValues("opsIncluded", opsIncluded)
-
-			OpsFailed := opsSeen - opsIncluded
-			if r.bannedThreshold == NoBanThreshold || OpsFailed < r.bannedThreshold {
-				return nil
-			}
-
-			isBanned = true
-			os = opsSeen
-			oi = opsIncluded
-			return nil
-		})
-		if err != nil {
-			l.Error(err, "filter_by_client failed")
-			c.Status(http.StatusInternalServerError)
-			c.Abort()
-		}
-
-		if isBanned {
-			l.Info("client banned")
-			c.Status(http.StatusForbidden)
-			c.JSON(
-				http.StatusForbidden,
-				gin.H{
-					"error": fmt.Sprintf(
-						"opsSeen (%d) exceeds opsIncluded (%d) by allowed threshold (%d). Wait %s to retry.",
-						os,
-						oi,
-						r.bannedThreshold,
-						r.bannedTimeWindow,
-					),
-				},
-			)
-			c.Abort()
-		} else {
-			l.Info("client ok")
-		}
+		l.Info("client ok")
 	}
+
 }
 
 // MapUserOpHashToClientID is a custom Gin middleware used to map a userOpHash to a clientID. This
