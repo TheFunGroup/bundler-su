@@ -161,7 +161,6 @@ func (s *Standalone) PaymasterDeposit() modules.BatchHandlerFunc {
 		if err != nil {
 			return err
 		}
-
 		deps := make(map[common.Address]*big.Int)
 		for i, op := range ctx.Batch {
 			pm := op.GetPaymaster()
@@ -183,7 +182,6 @@ func (s *Standalone) PaymasterDeposit() modules.BatchHandlerFunc {
 				ctx.MarkOpIndexForRemoval(i)
 			}
 		}
-
 		return nil
 	}
 }

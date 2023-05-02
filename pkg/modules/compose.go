@@ -9,7 +9,6 @@ func ComposeBatchHandlerFunc(fns ...BatchHandlerFunc) BatchHandlerFunc {
 				return err
 			}
 		}
-
 		return nil
 	}
 }
