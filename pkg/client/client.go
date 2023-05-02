@@ -3,7 +3,6 @@ package client
 
 import (
 	"errors"
-	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -53,7 +52,6 @@ func New(
 }
 
 func (i *Client) parseEntryPointAddress(ep string) (common.Address, error) {
-	fmt.Println(common.HexToAddress(ep))
 	for _, addr := range i.supportedEntryPoints {
 		if common.HexToAddress(ep) == addr {
 			return addr, nil
